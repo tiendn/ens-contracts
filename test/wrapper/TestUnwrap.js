@@ -71,7 +71,7 @@ describe('TestUnwrap', () => {
       BaseRegistrar.address,
     )
 
-    // setup .eth
+    // setup .astra
     await EnsRegistry.setSubnodeOwner(
       ROOT_NODE,
       labelhash('eth'),
@@ -92,11 +92,11 @@ describe('TestUnwrap', () => {
   })
 
   describe('wrapFromUpgrade()', () => {
-    describe('.eth', () => {
-      const encodedName = encodeName('wrapped.eth')
+    describe('.astra', () => {
+      const encodedName = encodeName('wrapped.astra')
       const label = 'wrapped'
       const labelHash = labelhash(label)
-      const nameHash = namehash(label + '.eth')
+      const nameHash = namehash(label + '.astra')
 
       it('allows unwrapping from an approved NameWrapper', async () => {
         await BaseRegistrar.register(labelHash, account, 1 * DAY)
@@ -199,9 +199,9 @@ describe('TestUnwrap', () => {
     describe('other', () => {
       const label = 'to-upgrade'
       const parentLabel = 'wrapped2'
-      const name = label + '.' + parentLabel + '.eth'
+      const name = label + '.' + parentLabel + '.astra'
       const parentLabelHash = labelhash(parentLabel)
-      const parentHash = namehash(parentLabel + '.eth')
+      const parentHash = namehash(parentLabel + '.astra')
       const nameHash = namehash(name)
       const encodedName = encodeName(name)
       it('allows unwrapping from an approved NameWrapper', async () => {

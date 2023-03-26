@@ -36,10 +36,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ensAddress: registry.address,
     },
   )
-  const resolver = await provider.getResolver('eth')
+  const resolver = await provider.getResolver('astra')
   if (resolver === null) {
     console.log(
-      'No resolver set for .eth; not setting interface for BulkRenewal',
+      'No resolver set for .astra; not setting interface for BulkRenewal',
     )
     return
   }
@@ -48,12 +48,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     resolver.address,
   )
   const tx = await resolverContract.setInterface(
-    ethers.utils.namehash('eth'),
+    ethers.utils.namehash('astra'),
     interfaceId,
     bulkRenewal.address,
   )
   console.log(
-    `Setting BulkRenewal interface ID ${interfaceId} on .eth resolver (tx: ${tx.hash})...`,
+    `Setting BulkRenewal interface ID ${interfaceId} on .astra resolver (tx: ${tx.hash})...`,
   )
   await tx.wait()
   return true

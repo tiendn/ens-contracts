@@ -736,13 +736,13 @@ contract('PublicResolver', function (accounts) {
 
   describe('dns', async () => {
     const basicSetDNSRecords = async () => {
-      // a.eth. 3600 IN A 1.2.3.4
+      // a.astra. 3600 IN A 1.2.3.4
       const arec = '016103657468000001000100000e10000401020304'
-      // b.eth. 3600 IN A 2.3.4.5
+      // b.astra. 3600 IN A 2.3.4.5
       const b1rec = '016203657468000001000100000e10000402030405'
-      // b.eth. 3600 IN A 3.4.5.6
+      // b.astra. 3600 IN A 3.4.5.6
       const b2rec = '016203657468000001000100000e10000403040506'
-      // eth. 86400 IN SOA ns1.ethdns.xyz. hostmaster.test.eth. 2018061501 15620 1800 1814400 14400
+      // astra. 86400 IN SOA ns1.ethdns.xyz. hostmaster.test.astra. 2018061501 15620 1800 1814400 14400
       const soarec =
         '03657468000006000100015180003a036e733106657468646e730378797a000a686f73746d6173746572057465737431036574680078492cbd00003d0400000708001baf8000003840'
       const rec = '0x' + arec + b1rec + b2rec + soarec
@@ -750,24 +750,24 @@ contract('PublicResolver', function (accounts) {
       await resolver.setDNSRecords(node, rec, { from: accounts[0] })
 
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('a.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('a.astra.')), 1),
         '0x016103657468000001000100000e10000401020304',
       )
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('b.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('b.astra.')), 1),
         '0x016203657468000001000100000e10000402030405016203657468000001000100000e10000403040506',
       )
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('eth.')), 6),
+        await resolver.dnsRecord(node, sha3(dnsName('astra.')), 6),
         '0x03657468000006000100015180003a036e733106657468646e730378797a000a686f73746d6173746572057465737431036574680078492cbd00003d0400000708001baf8000003840',
       )
     }
     it('permits setting name by owner', basicSetDNSRecords)
 
     it('should update existing records', async () => {
-      // a.eth. 3600 IN A 4.5.6.7
+      // a.astra. 3600 IN A 4.5.6.7
       const arec = '016103657468000001000100000e10000404050607'
-      // eth. 86400 IN SOA ns1.ethdns.xyz. hostmaster.test.eth. 2018061502 15620 1800 1814400 14400
+      // astra. 86400 IN SOA ns1.ethdns.xyz. hostmaster.test.astra. 2018061502 15620 1800 1814400 14400
       const soarec =
         '03657468000006000100015180003a036e733106657468646e730378797a000a686f73746d6173746572057465737431036574680078492cbe00003d0400000708001baf8000003840'
       const rec = '0x' + arec + soarec
@@ -775,17 +775,17 @@ contract('PublicResolver', function (accounts) {
       await resolver.setDNSRecords(node, rec, { from: accounts[0] })
 
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('a.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('a.astra.')), 1),
         '0x016103657468000001000100000e10000404050607',
       )
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('eth.')), 6),
+        await resolver.dnsRecord(node, sha3(dnsName('astra.')), 6),
         '0x03657468000006000100015180003a036e733106657468646e730378797a000a686f73746d6173746572057465737431036574680078492cbe00003d0400000708001baf8000003840',
       )
     })
 
     it('should keep track of entries', async () => {
-      // c.eth. 3600 IN A 1.2.3.4
+      // c.astra. 3600 IN A 1.2.3.4
       const crec = '016303657468000001000100000e10000401020304'
       const rec = '0x' + crec
 
@@ -794,43 +794,43 @@ contract('PublicResolver', function (accounts) {
       // Initial check
       var hasEntries = await resolver.hasDNSRecords(
         node,
-        sha3(dnsName('c.eth.')),
+        sha3(dnsName('c.astra.')),
       )
       assert.equal(hasEntries, true)
-      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('d.eth.')))
+      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('d.astra.')))
       assert.equal(hasEntries, false)
 
       // Update with no new data makes no difference
       await resolver.setDNSRecords(node, rec, { from: accounts[0] })
-      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('c.eth.')))
+      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('c.astra.')))
       assert.equal(hasEntries, true)
 
-      // c.eth. 3600 IN A
+      // c.astra. 3600 IN A
       const crec2 = '016303657468000001000100000e100000'
       const rec2 = '0x' + crec2
 
       await resolver.setDNSRecords(node, rec2, { from: accounts[0] })
 
       // Removal returns to 0
-      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('c.eth.')))
+      hasEntries = await resolver.hasDNSRecords(node, sha3(dnsName('c.astra.')))
       assert.equal(hasEntries, false)
     })
 
     it('should handle single-record updates', async () => {
-      // e.eth. 3600 IN A 1.2.3.4
+      // e.astra. 3600 IN A 1.2.3.4
       const erec = '016503657468000001000100000e10000401020304'
       const rec = '0x' + erec
 
       await resolver.setDNSRecords(node, rec, { from: accounts[0] })
 
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('e.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('e.astra.')), 1),
         '0x016503657468000001000100000e10000401020304',
       )
     })
 
     it('forbids setting DNS records by non-owners', async () => {
-      // f.eth. 3600 IN A 1.2.3.4
+      // f.astra. 3600 IN A 1.2.3.4
       const frec = '016603657468000001000100000e10000401020304'
       const rec = '0x' + frec
       await exceptions.expectFailure(
@@ -980,15 +980,15 @@ contract('PublicResolver', function (accounts) {
       await basicSetDNSRecords()
       await resolver.clearRecords(node)
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('a.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('a.astra.')), 1),
         null,
       )
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('b.eth.')), 1),
+        await resolver.dnsRecord(node, sha3(dnsName('b.astra.')), 1),
         null,
       )
       assert.equal(
-        await resolver.dnsRecord(node, sha3(dnsName('eth.')), 6),
+        await resolver.dnsRecord(node, sha3(dnsName('astra.')), 6),
         null,
       )
     })

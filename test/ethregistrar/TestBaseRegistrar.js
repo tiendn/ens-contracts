@@ -25,11 +25,11 @@ contract('BaseRegistrar', function (accounts) {
   before(async () => {
     ens = await ENS.new()
 
-    registrar = await BaseRegistrar.new(ens.address, namehash.hash('eth'), {
+    registrar = await BaseRegistrar.new(ens.address, namehash.hash('astra'), {
       from: ownerAccount,
     })
     await registrar.addController(controllerAccount, { from: ownerAccount })
-    await ens.setSubnodeOwner('0x0', sha3('eth'), registrar.address)
+    await ens.setSubnodeOwner('0x0', sha3('astra'), registrar.address)
   })
 
   it('should allow new registrations', async () => {

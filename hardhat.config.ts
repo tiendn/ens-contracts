@@ -45,6 +45,15 @@ const config: HardhatUserConfig = {
       tags: ['test', 'legacy', 'use_root'],
       allowUnlimitedContractSize: false,
     },
+    astra: {
+      url: `https://rpc.astranaut.dev`,
+      tags: ['use_root'],
+      chainId: 11115,
+      accounts: real_accounts,
+      saveDeployments: true,
+      blockGasLimit: 40000000,
+      allowUnlimitedContractSize: true,
+    },
     localhost: {
       url: 'http://127.0.0.1:8545',
       saveDeployments: false,

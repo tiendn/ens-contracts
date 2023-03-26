@@ -59,7 +59,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const resolver = await providerWithEns.getResolver('eth')
   if (resolver === null) {
     console.log(
-      'No resolver set for .eth; not setting interface for NameWrapper',
+      'No resolver set for .astra; not setting interface for NameWrapper',
     )
     return
   }
@@ -68,12 +68,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     resolver.address,
   )
   const tx3 = await resolverContract.setInterface(
-    ethers.utils.namehash('eth'),
+    ethers.utils.namehash('astra'),
     interfaceId,
     nameWrapper.address,
   )
   console.log(
-    `Setting NameWrapper interface ID ${interfaceId} on .eth resolver (tx: ${tx3.hash})...`,
+    `Setting NameWrapper interface ID ${interfaceId} on .astra resolver (tx: ${tx3.hash})...`,
   )
   await tx3.wait()
 }
